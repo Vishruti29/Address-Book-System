@@ -1,6 +1,7 @@
 package com.AddressBook;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AddressBook {
 
@@ -21,16 +22,48 @@ public class AddressBook {
     public static void main(String[] args) {
         AddressBook addressBook = new AddressBook();
 
-        // create new contacts
-        Contact contact1 = new Contact("Vish", "Chaudhari", "140", "jalgaon", "MH", "12345", "91-12345678", "vish.ch@gmail.com");
-        Contact contact2 = new Contact("Gaurav", "Patil", "207", "Indore", "MP", "12345", "91-87654321", "gaurav.patil@gmail.com");
+        // create scanner for console input
+        Scanner scanner = new Scanner(System.in);
 
-        // add contacts to address book
-        addressBook.addContact(contact1);
-        addressBook.addContact(contact2);
+        // loop to add contacts
+        while (true) {
+            System.out.print("Enter first name (or 'quit' to exit): ");
+            String firstName = scanner.nextLine();
+            if (firstName.equals("quit")) {
+                break;
+            }
 
-        // display contacts
+            System.out.print("Enter last name: ");
+            String lastName = scanner.nextLine();
+
+            System.out.print("Enter address: ");
+            String address = scanner.nextLine();
+
+            System.out.print("Enter city: ");
+            String city = scanner.nextLine();
+
+            System.out.print("Enter state: ");
+            String state = scanner.nextLine();
+
+            System.out.print("Enter zip code: ");
+            String zip = scanner.nextLine();
+
+            System.out.print("Enter phone number: ");
+            String phone = scanner.nextLine();
+
+            System.out.print("Enter email address: ");
+            String email = scanner.nextLine();
+
+            // create new contact and add to address book
+            Contact contact = new Contact(firstName, lastName, address, city, state, zip, phone, email);
+            addressBook.addContact(contact);
+
+            System.out.println("Contact added:\n" + contact);
+        }
+
+        // display all contacts in address book
         List<Contact> contacts = addressBook.getContacts();
+        System.out.println("All contacts in address book:");
         for (Contact contact : contacts) {
             System.out.println(contact);
         }
