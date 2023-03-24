@@ -6,114 +6,124 @@ public class AddressBookMain {
     public static void main(String[] args) {
         AddressBook addressBook = new AddressBook();
         Scanner scanner = new Scanner(System.in);
-
         boolean quit = false;
-        while (!quit) {
-            System.out.println("Select an option:");
-            System.out.println("1. Add new contact");
-            System.out.println("2. List all contacts");
-            System.out.println("3. Edit contact");
-            System.out.println("4. Delete contact");
-            System.out.println("0. Quit");
 
-            int option = scanner.nextInt();
+        while (!quit) {
+            System.out.println("\nAddress Book Options:");
+            System.out.println("1. Add a new contact");
+            System.out.println("2. List all contacts");
+            System.out.println("3. Edit a contact");
+            System.out.println("4. Delete a contact");
+            System.out.println("5. Quit the program");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (option) {
+            switch (choice) {
                 case 1:
-                    System.out.println("Enter first name:");
+                    System.out.print("Enter first name: ");
                     String firstName = scanner.nextLine();
-                    System.out.println("Enter last name:");
+
+                    System.out.print("Enter last name: ");
                     String lastName = scanner.nextLine();
-                    System.out.println("Enter address:");
+
+                    System.out.print("Enter address: ");
                     String address = scanner.nextLine();
-                    System.out.println("Enter city:");
+
+                    System.out.print("Enter city: ");
                     String city = scanner.nextLine();
-                    System.out.println("Enter state:");
+
+                    System.out.print("Enter state: ");
                     String state = scanner.nextLine();
-                    System.out.println("Enter ZIP code:");
+
+                    System.out.print("Enter zip code: ");
                     String zip = scanner.nextLine();
-                    System.out.println("Enter phone number:");
+
+                    System.out.print("Enter phone number: ");
                     String phone = scanner.nextLine();
-                    System.out.println("Enter email address:");
+
+                    System.out.print("Enter email address: ");
                     String email = scanner.nextLine();
 
                     Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phone, email);
                     addressBook.addContact(newContact);
-                    System.out.println("New contact added.");
+                    System.out.println("\nContact added successfully!");
                     break;
-
                 case 2:
                     ArrayList<Contact> contacts = addressBook.getContacts();
-                    if (contacts.size() > 0) {
-                        System.out.println("List of all contacts:");
+                    if (contacts.size() == 0) {
+                        System.out.println("\nNo contacts found!");
+                    } else {
+                        System.out.println("\nAll Contacts:");
                         for (Contact c : contacts) {
-                            System.out.println(c.toString());
+                            System.out.println(c);
                         }
-                    } else {
-                        System.out.println("No contacts found.");
                     }
                     break;
-
                 case 3:
-                    System.out.println("Enter first name of the contact to edit:");
-                    String editFirstName = scanner.nextLine();
-                    System.out.println("Enter last name of the contact to edit:");
-                    String editLastName = scanner.nextLine();
+                    System.out.print("Enter first name of the contact to edit: ");
+                    firstName = scanner.nextLine();
 
-                    Contact contactToEdit = addressBook.findContact(editFirstName, editLastName);
+                    System.out.print("Enter last name of the contact to edit: ");
+                    lastName = scanner.nextLine();
+
+                    Contact contactToEdit = addressBook.findContact(firstName, lastName);
                     if (contactToEdit != null) {
-                        System.out.println("Enter new address:");
-                        String newAddress = scanner.nextLine();
-                        System.out.println("Enter new city:");
-                        String newCity = scanner.nextLine();
-                        System.out.println("Enter new state:");
-                        String newState = scanner.nextLine();
-                        System.out.println("Enter new ZIP code:");
-                        String newZip = scanner.nextLine();
-                        System.out.println("Enter new phone number:");
-                        String newPhone = scanner.nextLine();
-                        System.out.println("Enter new email address:");
-                        String newEmail = scanner.nextLine();
+                        System.out.println("\nContact Details:");
+                        System.out.println(contactToEdit);
+                        System.out.println("\nEnter new contact details:");
 
-                        addressBook.editContact(contactToEdit, newAddress, newCity, newState, newZip, newPhone, newEmail);
-                        System.out.println("Contact edited.");
+                        System.out.print("Enter new address: ");
+                        address = scanner.nextLine();
+
+                        System.out.print("Enter new city: ");
+                        city = scanner.nextLine();
+
+                        System.out.print("Enter new state: ");
+                        state = scanner.nextLine();
+
+                        System.out.print("Enter new zip code: ");
+                        zip = scanner.nextLine();
+
+                        System.out.print("Enter new phone number: ");
+                        phone = scanner.nextLine();
+
+                        System.out.print("Enter new email address: ");
+                        email = scanner.nextLine();
+
+                        addressBook.editContact(contactToEdit, address, city, state, zip, phone, email);
+                        System.out.println("\nContact updated successfully!");
                     } else {
-                        System.out.println("Contact not found.");
+                        System.out.println("\nContact not found!");
                     }
                     break;
-
                 case 4:
-                    System.out.println("Enter first name of the contact to delete:");
-                    String deleteFirstName = scanner.nextLine();
-                    System.out.println("Enter last name of the contact to delete:");
-                    String deleteLastName = scanner.nextLine();
+                    System.out.print("Enter first name of the contact to delete: ");
+                    firstName = scanner.nextLine();
 
-                    boolean deleted = addressBook.deleteContact(deleteFirstName, deleteLastName);
-                    if (deleted) {
-                        System.out.println("Contact deleted.");
+                    System.out.print("Enter last name of the contact to delete: ");
+                    lastName = scanner.nextLine();
+
+                    if (addressBook.deleteContact(firstName, lastName)) {
+                        System.out.println("\nContact deleted successfully!");
                     } else {
-                        System.out.println("Contact not found.");
+                        System.out.println("\nContact not found!");
                     }
                     break;
-
-                case 0:
+                case 5:
                     quit = true;
                     break;
-
                 default:
-                    System.out.println("Invalid option.");
-                    break;
+                    System.out.println("\nInvalid choice! Please enter a valid choice.");
             }
         }
-
         scanner.close();
     }
 }
 
 class AddressBook {
     private ArrayList<Contact> contacts;
-
     public AddressBook() {
         this.contacts = new ArrayList<Contact>();
     }
@@ -128,7 +138,7 @@ class AddressBook {
 
     public Contact findContact(String firstName, String lastName) {
         for (Contact c : this.contacts) {
-            if (c.getFirstName().equals(firstName) && c.getLastName().equals(lastName)) {
+            if (c.getFirstName().equalsIgnoreCase(firstName) && c.getLastName().equalsIgnoreCase(lastName)) {
                 return c;
             }
         }
@@ -149,9 +159,8 @@ class AddressBook {
         if (contactToDelete != null) {
             this.contacts.remove(contactToDelete);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }
 
@@ -180,16 +189,8 @@ class Contact {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -240,11 +241,8 @@ class Contact {
         this.email = email;
     }
 
+    @Override
     public String toString() {
-        return this.firstName + " " + this.lastName + "\n" +
-                this.address + "\n" +
-                this.city + ", " + this.state + " " + this.zip + "\n" +
-                "Phone: " + this.phone + "\n" +
-                "Email: " + this.email;
+        return "Name: " + this.firstName + " " + this.lastName + ", Address: " + this.address + ", City: " + this.city + ", State: " + this.state + ", Zip Code: " + this.zip + ", Phone Number: " + this.phone + ", Email Address: " + this.email;
     }
 }
