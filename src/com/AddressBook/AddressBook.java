@@ -86,6 +86,7 @@ public class AddressBook {
                         }
                     }
                 }
+                // search person with city or state
             } else if (choice == 4) {
                 System.out.println("Enter the city or state to search for:");
                 String searchCity = scanner.next();
