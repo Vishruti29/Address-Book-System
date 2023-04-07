@@ -1,20 +1,14 @@
 package com.AddressBook;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
 public class AddressBook {
     private List<Contact> contacts;
-
     public AddressBook() {
         contacts = new ArrayList<Contact>();
     }
-
     public void addContact(Contact contact) {
         contacts.add(contact);
     }
-
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -29,7 +23,7 @@ public class AddressBook {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Map<String, AddressBook> addressBooks = new HashMap<>();
-
+        Set<String> addressBookNames = new HashSet<>(); // New HashSet to store names of existing address books.
         while (true) {
             System.out.println("Welcome to the Address Book System!");
             System.out.println("What would you like to do?");
@@ -44,9 +38,15 @@ public class AddressBook {
             if (choice == 1) {
                 System.out.println("Enter the name of the new Address Book:");
                 String name = scanner.next();
-                AddressBook addressBook = new AddressBook();
-                addressBooks.put(name, addressBook);
-                System.out.println("Address Book '" + name + "' created.");
+                // Check if the name already exists in the HashSet.
+                if (addressBookNames.contains(name)) {
+                    System.out.println("Address Book with name '" + name + "' already exists. Please enter a different name.");
+                } else {
+                    AddressBook addressBook = new AddressBook();
+                    addressBooks.put(name, addressBook);
+                    addressBookNames.add(name); // Add the new name to the HashSet.
+                    System.out.println("Address Book '" + name + "' created.");
+                }
             } else if (choice == 2) {
                 System.out.println("Enter the name of the Address Book to add a Contact to:");
                 String name = scanner.next();
@@ -114,8 +114,8 @@ public class AddressBook {
                 System.out.println("Invalid choice. Please try again.");
             }
             System.out.println();
-            scanner.close();
         }
+        scanner.close();
     }
     static class Contact {
         private String firstName;
