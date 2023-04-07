@@ -1,5 +1,8 @@
 package com.AddressBook;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 public class AddressBook {
     private List<Contact> contacts;
@@ -15,7 +18,14 @@ public class AddressBook {
     public List<Contact> getContacts() {
         return contacts;
     }
-
+    public boolean checkDuplicateContact(Contact newContact) {
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equals(newContact.getFirstName()) && contact.getLastName().equals(newContact.getLastName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Map<String, AddressBook> addressBooks = new HashMap<>();
@@ -91,21 +101,13 @@ public class AddressBook {
                 System.out.println("Enter the city or state to search for:");
                 String searchCity = scanner.next();
                 System.out.println("Contacts in city '" + searchCity + "':");
-                addressBooks.values()
-                        .stream()
-                        .flatMap(addressBook -> addressBook.getContacts().stream())
-                        .filter(contact -> contact.getCity().equalsIgnoreCase(searchCity))
-                        .forEach(System.out::println);
+                addressBooks.values().stream().flatMap(addressBook -> addressBook.getContacts().stream()).filter(contact -> contact.getCity().equalsIgnoreCase(searchCity)).forEach(System.out::println);
 
                 // Search for person by state
                 System.out.println("Enter the state to search for Contacts:");
                 String searchState = scanner.next();
                 System.out.println("Contacts in state '" + searchState + "':");
-                addressBooks.values()
-                        .stream()
-                        .flatMap(addressBook -> addressBook.getContacts().stream())
-                        .filter(contact -> contact.getState().equalsIgnoreCase(searchState))
-                        .forEach(System.out::println);
+                addressBooks.values().stream().flatMap(addressBook -> addressBook.getContacts().stream()).filter(contact -> contact.getState().equalsIgnoreCase(searchState)).forEach(System.out::println);
             } else if (choice == 5) {
                 break;
             } else {
@@ -114,14 +116,6 @@ public class AddressBook {
             System.out.println();
             scanner.close();
         }
-    }
-    public boolean checkDuplicateContact(Contact newContact) {
-            for (Contact contact : contacts) {
-                if (contact.getFirstName().equals(newContact.getFirstName()) && contact.getLastName().equals(newContact.getLastName())) {
-                    return true;
-                }
-            }
-            return false;
     }
     static class Contact {
         private String firstName;
@@ -208,4 +202,3 @@ public class AddressBook {
         }
     }
 }
-
