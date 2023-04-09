@@ -13,12 +13,16 @@ class AddressBook {
         this.people.add(contact);
     }
 
-    public List<Contact> searchByCity(String city) {
-        return people.stream().filter(person -> person.getCity().equals(city)).collect(Collectors.toList());
+    public List<Contact> search(String city, String state) {
+        return people.stream().filter(person -> person.getCity().equals(city) && person.getState().equals(state)).collect(Collectors.toList());
     }
 
-    public List<Contact> searchByState(String state) {
-        return people.stream().filter(person -> person.getState().equals(state)).collect(Collectors.toList());
+    public Map<String, Long> countByCity() {
+        return people.stream().collect(Collectors.groupingBy(Contact::getCity, Collectors.counting()));
+    }
+
+    public Map<String, Long> countByState() {
+        return people.stream().collect(Collectors.groupingBy(Contact::getState, Collectors.counting()));
     }
 }
 public class AddressBookMain {
@@ -35,44 +39,21 @@ public class AddressBookMain {
 
         List<AddressBook> addressBooks = Arrays.asList(addressBook1, addressBook2);
 
-        // Create dictionaries of people by city and state
-        Map<String, List<Contact>> peopleByCity = new HashMap<>();
-        Map<String, List<Contact>> peopleByState = new HashMap<>();
-        for (AddressBook addressBook : addressBooks) {
-            for (Contact contact : addressBook.people) {
-                String city = contact.getCity();
-                String state = contact.getState();
+        // count by city
+        Map<String, Long> countByCity = addressBooks.stream()
+                .flatMap(addressBook -> addressBook.countByCity().entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingLong(Map.Entry::getValue)));
 
-                if (!peopleByCity.containsKey(city)) {
-                    peopleByCity.put(city, new ArrayList<>());
-                }
-                peopleByCity.get(city).add(contact);
+        System.out.println("Count by City:");
+        countByCity.forEach((city, count) -> System.out.println(city + ": " + count));
 
-                if (!peopleByState.containsKey(state)) {
-                    peopleByState.put(state, new ArrayList<>());
-                }
-                peopleByState.get(state).add(contact);
-            }
-        }
+        // count by state
+        Map<String, Long> countByState = addressBooks.stream()
+                .flatMap(addressBook -> addressBook.countByState().entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingLong(Map.Entry::getValue)));
 
-        String city = "Indore";
-        String state = "UP";
-
-        System.out.println("People in " + city + ":");
-        List<Contact> peopleInCity = peopleByCity.get(city);
-        if (peopleInCity != null) {
-            peopleInCity.forEach(System.out::println);
-        } else {
-            System.out.println("No results found.");
-        }
-
-        System.out.println("People in " + state + ":");
-        List<Contact> peopleInState = peopleByState.get(state);
-        if (peopleInState != null) {
-            peopleInState.forEach(System.out::println);
-        } else {
-            System.out.println("No results found.");
-        }
+        System.out.println("Count by State:");
+        countByState.forEach((state, count) -> System.out.println(state + ": " + count));
     }
 }
     class Contact {
