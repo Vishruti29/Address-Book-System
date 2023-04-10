@@ -14,6 +14,17 @@ class AddressBook {
     public List<Contact> getContact() {
         return people;
     }
+    public List<Contact> sortByCity() {
+        return people.stream().sorted(Comparator.comparing(Contact::getCity)).collect(Collectors.toList());
+    }
+
+    public List<Contact> sortByState() {
+        return people.stream().sorted(Comparator.comparing(Contact::getState)).collect(Collectors.toList());
+    }
+
+    public List<Contact> sortByZip() {
+        return people.stream().sorted(Comparator.comparing(Contact::getZip)).collect(Collectors.toList());
+    }
 
 }
 public class AddressBookMain {
@@ -23,9 +34,17 @@ public class AddressBookMain {
         addressBook.addContact(new Contact("A","B","C","D","E","F","G","H"));
         addressBook.addContact(new Contact("Q","W","E","R","T","Y","U","I"));
 
-        List<Contact> sortedPeople = addressBook.getContact().stream().sorted(Comparator.comparing(Contact::getFirstName)).collect(Collectors.toList());
-        System.out.println("Sorted Address Book by Name:");
-        sortedPeople.forEach(System.out::println);
+        System.out.println("Sorted by City:");
+        List<Contact> sortedByCity = addressBook.sortByCity();
+        sortedByCity.forEach(System.out::println);
+
+        System.out.println("Sorted by State:");
+        List<Contact> sortedByState = addressBook.sortByState();
+        sortedByState.forEach(System.out::println);
+
+        System.out.println("Sorted by Zip:");
+        List<Contact> sortedByZip = addressBook.sortByZip();
+        sortedByZip.forEach(System.out::println);
     }
 }
     class Contact {
