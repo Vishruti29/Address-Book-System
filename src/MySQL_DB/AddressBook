@@ -1,0 +1,200 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 37
+Server version: 8.0.32 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database address_book;
+Query OK, 1 row affected (0.01 sec)
+
+UC1=> create address_book=>
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| address_book       |
+| employeewage       |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> use address_book;
+Database changed
+mysql> select database();
++--------------+
+| database()   |
++--------------+
+| address_book |
++--------------+
+1 row in set (0.00 sec)
+
+UC2=> create a Address Book Table with first and last names, address, city, state, zip, phone number and email as its attributes =>
+
+mysql> CREATE TABLE address_book (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,first_name VARCHAR(20) NOT NULL,last_name VARCHAR(20) NOT NULL,address VARCHAR(100) NOT NULL,city VARCHAR(20) NOT NULL,state VARCHAR(20) NOT NULL,zip VARCHAR(06) NOT NULL,phone VARCHAR(10) NOT NULL,email VARCHAR(50) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> describe address_book;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int          | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(20)  | NO   |     | NULL    |                |
+| last_name  | varchar(20)  | NO   |     | NULL    |                |
+| address    | varchar(100) | NO   |     | NULL    |                |
+| city       | varchar(20)  | NO   |     | NULL    |                |
+| state      | varchar(20)  | NO   |     | NULL    |                |
+| zip        | varchar(6)   | NO   |     | NULL    |                |
+| phone      | varchar(10)  | NO   |     | NULL    |                |
+| email      | varchar(50)  | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+UC3=> Insert new contacts in adress book =>
+
+mysql> insert into address_book(first_name,last_name,address,city,state,zip,phone,email) values('Vishruti','Patil','D-207','Indore','MP','452016','7067181622','vishruti29@gmail.com'),('Ashu','Chouhan','XYZ','ABC','UP','123456','1234567890','ashu234@yahoo.com'),('Arpit','Gulhane','123','456','MH','9876543210','arpit213@email.com');
+ERROR 1136 (21S01): Column count doesn't match value count at row 3
+mysql> insert into address_book(first_name,last_name,address,city,state,zip,phone,email) values('Vishruti','Patil','D-207','Indore','MP','452016','7067181622','vishruti29@gmail.com'),('Ashu','Chouhan','XYZ','ABC','UP','123456','1234567890','ashu234@yahoo.com'),('Arpit','Gulhane','123','456','MH','654321','9876543210','arpit213@email.com');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from address_book;
++----+------------+-----------+---------+--------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city   | state | zip    | phone      | email                |
++----+------------+-----------+---------+--------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Indore | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
+|  2 | Ashu       | Chouhan   | XYZ     | ABC    | UP    | 123456 | 1234567890 | ashu234@yahoo.com    |
+|  3 | Arpit      | Gulhane   | 123     | 456    | MH    | 654321 | 9876543210 | arpit213@email.com   |
++----+------------+-----------+---------+--------+-------+--------+------------+----------------------+
+3 rows in set (0.00 sec)
+
+UC4=> Edit contact by first name =>
+
+mysql> update address_book set city='Pune' where first_name='Vishruti';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from address_book;
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
+|  2 | Ashu       | Chouhan   | XYZ     | ABC  | UP    | 123456 | 1234567890 | ashu234@yahoo.com    |
+|  3 | Arpit      | Gulhane   | 123     | 456  | MH    | 654321 | 9876543210 | arpit213@email.com   |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+3 rows in set (0.00 sec)
+
+UC5=> Delete contact by their name =>
+
+mysql> delete from address_book where first_name='Arpit' and last_name='Gulhane';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from address_book;
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
+|  2 | Ashu       | Chouhan   | XYZ     | ABC  | UP    | 123456 | 1234567890 | ashu234@yahoo.com    |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+2 rows in set (0.00 sec)
+
+UC6=> Retrive person by city and state name =>
+
+mysql> SELECT * FROM address_book WHERE city='Pune' and state='MP';
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+1 row in set (0.00 sec)
+
+UC7 => Size of Address Book =>
+
+mysql> SELECT city, state, COUNT(*) as size FROM address_book GROUP BY city, state;
++------+-------+------+
+| city | state | size |
++------+-------+------+
+| Pune | MP    |    1 |
+| ABC  | UP    |    1 |
++------+-------+------+
+2 rows in set (0.00 sec)
+
+UC8 => Sort alphabetically by person's name for a given city =>
+
+mysql> SELECT * FROM address_book WHERE city = 'Pune' ORDER BY first_name, last_name;
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM address_book WHERE city = 'Pune' ORDER BY last_name, first_name;
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+
+1 row in set (0.00 sec)
+
+UC9 => Identify Address Book with their name and type =>
+
+mysql> ALTER TABLE address_book ADD COLUMN name TEXT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE address_book ADD COLUMN type TEXT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE address_book SET name = 'My Friends', type = 'Friends' WHERE id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from address_book;
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+------------+---------+
+| id | first_name | last_name | address | city | state | zip    | phone      | email                | name       | type    |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+------------+---------+
+|  1 | Vishruti   | Patil     | D-207   | Pune | MP    | 452016 | 7067181622 | vishruti29@gmail.com | NULL       | NULL    |
+|  2 | Ashu       | Chouhan   | XYZ     | ABC  | UP    | 123456 | 1234567890 | ashu234@yahoo.com    | My Friends | Friends |
++----+------------+-----------+---------+------+-------+--------+------------+----------------------+------------+---------+
+2 rows in set (0.00 sec)
+
+UC10 => Ability to get number of contact person count by type
+
+mysql> SELECT type, COUNT(*) AS count FROM address_book GROUP BY type;
++---------+-------+
+| type    | count |
++---------+-------+
+| NULL    |     1 |
+| Friends |     1 |
++---------+-------+
+2 rows in set (0.00 sec)
+
+UC11=> Ability to add person to both Friend and Family
+
+mysql> INSERT INTO address_book (first_name, last_name, address, city, state, zip, phone, email, name, type) VALUES ('Gaurav', 'Patil', 'Indrasan', 'Indore', 'MP', '452001', '9993905250', 'patilgaurav.23@gmail.com', 'My Family', 'Family');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from address_book;
++----+------------+-----------+----------+--------+-------+--------+------------+--------------------------+------------+---------+
+| id | first_name | last_name | address  | city   | state | zip    | phone      | email                    | name       | type    |
++----+------------+-----------+----------+--------+-------+--------+------------+--------------------------+------------+---------+
+|  1 | Vishruti   | Patil     | D-207    | Pune   | MP    | 452016 | 7067181622 | vishruti29@gmail.com     | NULL       | NULL    |
+|  2 | Ashu       | Chouhan   | XYZ      | ABC    | UP    | 123456 | 1234567890 | ashu234@yahoo.com        | My Friends | Friends |
+|  4 | Gaurav     | Patil     | Indrasan | Indore | MP    | 452001 | 9993905250 | patilgaurav.23@gmail.com | My Family  | Family  |
++----+------------+-----------+----------+--------+-------+--------+------------+--------------------------+------------+---------+
+3 rows in set (0.00 sec)
+
